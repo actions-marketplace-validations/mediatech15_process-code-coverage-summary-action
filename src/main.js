@@ -141,7 +141,7 @@ function getBadge(conclusion) {
 
 function getModifiedMarkup(markupData, ci) {
   core.debug(markupData)
-  const regex = /<details(?: open)?>\s*?<summary>.+<\/summary>([\w:\*\(\)\.\%\|\-\s]+)<\/details>/
+  const regex = /<details(?: open)?>\s*?<summary>.+<\/summary>([\w:\*\(\)\.\%\|\-\s]+)<\/details>/gm
   const matches = regex.exec(markupData)
   core.debug('modified markup matches')
   core.debug(JSON.stringify(matches))
