@@ -1,5 +1,11 @@
 # process-code-coverage-summary
 
+> [!NOTE]
+> This is a fork of `im-open/process-code-coverage-summary` that contains some changes. They should be swappable. Use whichever you prefer. This has been updated to `node20`
+
+> [!IMPORTANT]
+> I have bumped the version of this action to start at 3.0.0 so that is the only change (other than the implied repo reference)
+
 This action works in conjunction with [im-open/code-coverage-report-generator].  If a `Summary.md` file is created in the report generator action by including `MarkdownSummary` in the `reporttypes` input, this action will take the contents of that file and create a Status Check or PR Comment depending on the flags set.  This action does not create code coverage reports and it only processes one summary report at a time.
 
 ## Index <!-- omit in toc -->
@@ -22,7 +28,7 @@ This action works in conjunction with [im-open/code-coverage-report-generator]. 
     - [Updating the README.md](#updating-the-readmemd)
   - [Code of Conduct](#code-of-conduct)
   - [License](#license)
-  
+
 ## Thresholds
 
 The status check can be seen as a new item on the workflow run, a PR comment or on the PR Status Check section. If thresholds for line or branch coverage have been provided and the actual branch or line coverage does not meet or exceed the threshold, the status check will be marked as `failed`.  Having the status check marked as `failed` will prevent PRs from being merged.  If this status check behavior is not desired, the `ignore-threshold-failures` input can be set and the outcome will be marked as `neutral` if threshold failures are detected.  The status badge that is shown in the comment or status check body will still indicate it was a failure though.
@@ -103,7 +109,7 @@ jobs:
 
       - name: dotnet test with coverage
         continue-on-error: true
-        run: dotnet test './src/MyProj.sln' --logger trx --configuration Release /property:CollectCoverage=True /property:CoverletOutputFormat=opencover 
+        run: dotnet test './src/MyProj.sln' --logger trx --configuration Release /property:CollectCoverage=True /property:CoverletOutputFormat=opencover
 
       - name: ReportGenerator
         uses: im-open/code-coverage-report-generator@4
@@ -113,13 +119,13 @@ jobs:
           title: dotnet code coverage
           reporttypes: 'MarkdownSummary;'
           assemblyfilters: '-xunit*;-Dapper;-MyProj.Tests.Shared;'
-          
+
       - name: Create a status check for the code coverage results
         id: dotnet-coverage-check
         # You may also reference just the major or major.minor version
         uses: im-open/process-code-coverage-summary@v2.2.3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}     
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           summary-file: './coverage-results/dotnet-summary.md'
           report-name: 'MyProj .NET Code Coverage'      # Default: Code Coverage Results
           check-name: 'dotnet code coverage'            # Default: code coverage
@@ -130,7 +136,7 @@ jobs:
           ignore-threshold-failures: false              # Default: false
           line-threshold: 99                            # Default: 0, which means thresholds are not applied
           branch-threshold: 98                          # Default: 0, which means thresholds are not applied
-      
+
       # jest tests
       - name: jest test with coverage
         continue-on-error: true
@@ -152,7 +158,7 @@ jobs:
           summary-file: './coverage-results/jest-summary.md'
           create-pr-comment: true
           update-comment-if-one-exists: true
-          update-comment-key: 'jest'                
+          update-comment-key: 'jest'
 
       - name: Fail if there were coverage failures
         if: steps.dotnet-coverage-check.outputs.coverage-outcome == 'Failed'
@@ -184,7 +190,7 @@ This repo uses [git-version-lite] in its workflows to examine commit messages to
 
 ### Source Code Changes
 
-The files and directories that are considered source code are listed in the `files-with-code` and `dirs-with-code` arguments in both the [build-and-review-pr] and [increment-version-on-merge] workflows.  
+The files and directories that are considered source code are listed in the `files-with-code` and `dirs-with-code` arguments in both the [build-and-review-pr] and [increment-version-on-merge] workflows.
 
 If a PR contains source code changes, the README.md should be updated with the latest action version and the action should be recompiled.  The [build-and-review-pr] workflow will ensure these steps are performed when they are required.  The workflow will provide instructions for completing these steps if the PR Author does not initially complete them.
 

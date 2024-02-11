@@ -114,7 +114,7 @@ async function createStatusCheck(markupData, checkTime, conclusion) {
     .create({
       owner,
       repo,
-      name: `status check - ${checkName}`,
+      name: checkName,
       head_sha: git_sha,
       status: 'completed',
       conclusion: conclusion,
@@ -140,25 +140,11 @@ function getBadge(conclusion) {
 }
 
 function getModifiedMarkup(markupData, ci) {
-  const regex = /# Summary/i;
-  const updatedMarkup = markupData.replace(regex, '');
-
-  const modifiedMarkup = `
-# ${reportName}    
-
-|Coverage Type|Threshold|Actual Coverage| Status |
-|-------------|---------|---------------|--------|
-|Line         |${ci.line.threshold}%|${ci.line.actualCoverage}%|${ci.line.badge} |
-|Branch       |${ci.branch.threshold}%|${ci.branch.actualCoverage}%|${ci.branch.badge}|
-
-### Code Coverage Summary
-<details>
-<summary>Code Coverage Details</summary>
-
-${updatedMarkup.trim()}
-</details>
-`.trim();
-  return modifiedMarkup;
+  core.debug(markupData)
+  const regex = /<details(?: open)?>\s*?<summary>.+<\/summary>([\w:\*\(\)\.\%\|\-\s]+)<\/details>/
+  const matches = regex.exec(markupData)
+  core.debug('modified markup matches')
+  core.debug(JSON.stringify(matches))
 }
 
 function getCoverageInfo(markupData) {
