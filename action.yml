@@ -52,6 +52,10 @@ outputs:
   coverage-outcome:
     description: "Coverage outcome based on Threshold comparisons: Failed|Passed.  If exceptions are thrown or if it exits early because of argument errors, this is set to Failed."
 
+branding:
+  icon: archive
+  color: orange
+
 runs:
   using: "node20"
   main: "dist/index.js"
