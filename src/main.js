@@ -141,7 +141,7 @@ function getBadge(conclusion) {
 
 function getModifiedMarkup(markupData) {
   core.debug(markupData)
-  const regex = new RegExp('<details(?: open)?>\\s*?<summary>.+<\\/summary>([\\w:\\*\\(\\)\\.\\%\\|\\-\\s]+)<\\/details>', 'g')
+  const regex = new RegExp('(#+ \\w+)\\n+(<details(?:\\sopen)?>\\s*?<summary>.+<\\/summary>)?([\\w:\\*\\(\\)\\.\\%\\|\\-\\s]+)(<\\/details>)?', 'g')
   const matches = [...markupData.matchAll(regex)]
   core.debug('modified markup matches')
   matches.forEach(v => core.debug(JSON.stringify(v)))
@@ -152,7 +152,7 @@ function getModifiedMarkup(markupData) {
       modifiedData.concat(v[1], '\n', v[3], '\n')
     } else {
       core.debug('No collapse section')
-      modifiedData.concat(v[1], '\n', v[3], '\n')
+      modifiedData.concat(v[1], '\n', v[2], '\n')
     }
   })
   core.debug('modified markup')
