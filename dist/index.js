@@ -7629,7 +7629,7 @@ function getModifiedMarkup(markupData) {
   matches.forEach((v) => core.debug(JSON.stringify(v)));
   let modifiedData = "";
   matches.forEach((v) => {
-    if (v[2] && v[4]) {
+    if (v.length === 5) {
       core.debug("Found collapse section");
       modifiedData.concat(v[1], "\n", v[3], "\n");
     } else {
