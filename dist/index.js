@@ -7623,8 +7623,8 @@ function getBadge(conclusion) {
 }
 function getModifiedMarkup(markupData, ci) {
   core.debug(markupData);
-  const regex = new RegExp("<details(?:sopen)?>\\s*?<summary>.+<\\/summary>([\\w:\\*\\(\\)\\.\\%\\|\\-\\s]+)<\\/details>", "g");
-  const matches = regex.exec(markupData);
+  const regex = new RegExp("<details(?: open)?>\\s*?<summary>.+<\\/summary>([\\w:\\*\\(\\)\\.\\%\\|\\-\\s]+)<\\/details>", "g");
+  const matches = [...markupData.matchAll(regex)];
   core.debug("modified markup matches");
   core.debug(JSON.stringify(matches));
 }
