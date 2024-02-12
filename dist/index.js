@@ -7631,10 +7631,10 @@ function getModifiedMarkup(markupData) {
   matches.forEach((v) => {
     if (v.length === 5) {
       core.debug("Found collapse section");
-      modifiedData.concat(v[1], "\n", v[3], "\n");
+      modifiedData = modifiedData.concat(v[1], "\n", v[3], "\n");
     } else {
       core.debug("No collapse section");
-      modifiedData.concat(v[1], "\n", v[2], "\n");
+      modifiedData = modifiedData.concat(v[1], "\n", v[2], "\n");
     }
   });
   core.debug("modified markup");
