@@ -251,7 +251,7 @@ async function run() {
 
     let coverageInfo = getCoverageInfo(markupData);
     const modifiedMarkup = getModifiedMarkup(markupData);
-    const modifiedMarkup2 = getModifiedMarkupPr(markupData, ci);
+    const modifiedMarkup2 = getModifiedMarkupPr(markupData, coverageInfo);
 
     const checkTime = new Date().toUTCString();
     core.info(`Check time is: ${checkTime}`);

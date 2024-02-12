@@ -7641,7 +7641,7 @@ function getModifiedMarkup(markupData) {
   core.debug(modifiedData);
   return modifiedData;
 }
-function getModifiedMarkupPr(markupData, ci2) {
+function getModifiedMarkupPr(markupData, ci) {
   const regex = /# Summary/i;
   const updatedMarkup = markupData.replace(regex, "");
   const modifiedMarkup = `
@@ -7649,8 +7649,8 @@ function getModifiedMarkupPr(markupData, ci2) {
 
 |Coverage Type|Threshold|Actual Coverage| Status |
 |-------------|---------|---------------|--------|
-|Line         |${ci2.line.threshold}%|${ci2.line.actualCoverage}%|${ci2.line.badge} |
-|Branch       |${ci2.branch.threshold}%|${ci2.branch.actualCoverage}%|${ci2.branch.badge}|
+|Line         |${ci.line.threshold}%|${ci.line.actualCoverage}%|${ci.line.badge} |
+|Branch       |${ci.branch.threshold}%|${ci.branch.actualCoverage}%|${ci.branch.badge}|
 
 ### Code Coverage Summary
 <details>
@@ -7723,7 +7723,7 @@ async function run() {
     }
     let coverageInfo = getCoverageInfo(markupData);
     const modifiedMarkup = getModifiedMarkup(markupData);
-    const modifiedMarkup2 = getModifiedMarkupPr(markupData, ci);
+    const modifiedMarkup2 = getModifiedMarkupPr(markupData, coverageInfo);
     const checkTime = new Date().toUTCString();
     core.info(`Check time is: ${checkTime}`);
     if (shouldCreateStatusCheck) {
