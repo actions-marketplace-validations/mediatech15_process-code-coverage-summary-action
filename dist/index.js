@@ -7641,6 +7641,26 @@ function getModifiedMarkup(markupData) {
   core.debug(modifiedData);
   return modifiedData;
 }
+function getModifiedMarkupPr(markupData, ci2) {
+  const regex = /# Summary/i;
+  const updatedMarkup = markupData.replace(regex, "");
+  const modifiedMarkup = `
+# ${reportName}
+
+|Coverage Type|Threshold|Actual Coverage| Status |
+|-------------|---------|---------------|--------|
+|Line         |${ci2.line.threshold}%|${ci2.line.actualCoverage}%|${ci2.line.badge} |
+|Branch       |${ci2.branch.threshold}%|${ci2.branch.actualCoverage}%|${ci2.branch.badge}|
+
+### Code Coverage Summary
+<details>
+<summary>Code Coverage Details</summary>
+
+${updatedMarkup.trim()}
+</details>
+`.trim();
+  return modifiedMarkup;
+}
 function getCoverageInfo(markupData) {
   let info = {
     statusConclusion: "success",
@@ -7703,13 +7723,14 @@ async function run() {
     }
     let coverageInfo = getCoverageInfo(markupData);
     const modifiedMarkup = getModifiedMarkup(markupData);
+    const modifiedMarkup2 = getModifiedMarkupPr(markupData, ci);
     const checkTime = new Date().toUTCString();
     core.info(`Check time is: ${checkTime}`);
     if (shouldCreateStatusCheck) {
       await createStatusCheck(modifiedMarkup, checkTime, coverageInfo.statusConclusion);
     }
     if (shouldCreatePRComment && github.context.eventName == "pull_request") {
-      await createPrComment(modifiedMarkup, updateCommentIfOneExists);
+      await createPrComment(modifiedMarkup2, updateCommentIfOneExists);
     }
     core.setOutput("coverage-outcome", coverageInfo.statusConclusion == "failure" ? "Failed" : "Passed");
   } catch (error) {

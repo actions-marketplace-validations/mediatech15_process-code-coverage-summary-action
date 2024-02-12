@@ -6,6 +6,15 @@
 > [!IMPORTANT]
 > I have bumped the version of this action to start at 3.0.0 so that is the only change (other than the implied repo reference)
 
+## This versions changes
+
+- Update name of check summary
+- Update to remove collapses for status check summary
+  - The original format remains for PRs
+- Update to `node20`
+
+
+## Original Readme (still relevant)
 This action works in conjunction with [im-open/code-coverage-report-generator].  If a `Summary.md` file is created in the report generator action by including `MarkdownSummary` in the `reporttypes` input, this action will take the contents of that file and create a Status Check or PR Comment depending on the flags set.  This action does not create code coverage reports and it only processes one summary report at a time.
 
 ## Index <!-- omit in toc -->
