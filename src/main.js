@@ -139,12 +139,25 @@ function getBadge(conclusion) {
   return `![Generic badge](https://img.shields.io/badge/${badgeStatusText}-${badgeColor}.svg)`;
 }
 
-function getModifiedMarkup(markupData, ci) {
+function getModifiedMarkup(markupData) {
   core.debug(markupData)
   const regex = new RegExp('<details(?: open)?>\\s*?<summary>.+<\\/summary>([\\w:\\*\\(\\)\\.\\%\\|\\-\\s]+)<\\/details>', 'g')
   const matches = [...markupData.matchAll(regex)]
   core.debug('modified markup matches')
   matches.forEach(v => core.debug(JSON.stringify(v)))
+  let modifiedData = ''
+  matches.forEach(v => {
+    if (v[2] && v[4]){
+      core.debug('Found collapse section')
+      modifiedData.concat(v[1], '\n', v[3], '\n')
+    } else {
+      core.debug('No collapse section')
+      modifiedData.concat(v[1], '\n', v[3], '\n')
+    }
+  })
+  core.debug('modified markup')
+  core.debug(modifiedData)
+  return modifiedData
 }
 
 function getCoverageInfo(markupData) {
@@ -215,7 +228,7 @@ async function run() {
     }
 
     let coverageInfo = getCoverageInfo(markupData);
-    const modifiedMarkup = getModifiedMarkup(markupData, coverageInfo);
+    const modifiedMarkup = getModifiedMarkup(markupData);
 
     const checkTime = new Date().toUTCString();
     core.info(`Check time is: ${checkTime}`);
