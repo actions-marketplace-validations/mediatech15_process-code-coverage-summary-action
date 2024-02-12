@@ -144,7 +144,7 @@ function getModifiedMarkup(markupData, ci) {
   const regex = new RegExp('<details(?: open)?>\\s*?<summary>.+<\\/summary>([\\w:\\*\\(\\)\\.\\%\\|\\-\\s]+)<\\/details>', 'g')
   const matches = [...markupData.matchAll(regex)]
   core.debug('modified markup matches')
-  core.debug(JSON.stringify(matches))
+  matches.forEach(v => core.debug(JSON.stringify(v)))
 }
 
 function getCoverageInfo(markupData) {
